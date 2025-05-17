@@ -1,0 +1,17 @@
+[
+    {
+        "timestamp": "2025-05-17 10:33:00",
+        "event": "AppStarted",
+        "details": "Программа запущена"
+    },
+    {
+        "timestamp": "2025-05-17 10:33:30",
+        "event": "FileOpened",
+        "details": "Открыт файл: C:/Users/pavlo/AppData/Roaming/TimeTracker/backup/usage.json"
+    },
+    {
+        "timestamp": "2025-05-17 10:33:47",
+        "event": "GraphBuilt",
+        "details": "График по файлу: usage.json"
+    }
+]

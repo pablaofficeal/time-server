@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pabla Timer Stats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Статистика использования ПК</h1>
+        
+        <div class="filters">
+            <button class="btn active" onclick="filterData(1)">За день</button>
+            <button class="btn" onclick="filterData(3)">За 3 дня</button>
+            <button class="btn" onclick="filterData(7)">За неделю</button>
+            <button class="btn" onclick="filterData(30)">За месяц</button>
+            <button class="btn" onclick="filterData(0)">Всё время</button>
+        <div class="open-close-top-apps">
+            <button id="openTopApps">Top App</button>
+        </div>
+    </div>
+<div class="top-apps" id="top-apps">
+    <h2>Топ 5 программ за 1 месяц</h2>
+    <ol>
+        <li id="topApp1">—</li>
+        <li id="topApp12">—</li>
+        <li id="topApp3">—</li>
+        <li id="topApp4">—</li>
+        <li id="topApp5">—</li>
+    </ol>
+</div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Общее время</h3>
+                <p id="totalHours">0 ч</p>
+            </div>
+            <div class="stat-card">
+                <h3>Популярная программа на 1 месце</h3>
+                <p id="topApp">—</p>
+            </div>
+            <div class="stat-card">
+                <h3>Популярная программа на 2 месце</h3>
+                <p id="topApp2">—</p>
+            </div>
+        </div>
+
+        <div class="charts">
+            <div class="chart-container">
+                <h2 class="chart-title">Время по дням</h2>
+                <img id="timeChart" src="/api/plot?range=1" alt="График времени">
+            </div>
+            <div class="chart-container">
+                <h2 class="chart-title">Топ программ</h2>
+                <img id="appsChart" src="" alt="График программ">
+            </div>
+        </div>
+
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
