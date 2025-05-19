@@ -29,7 +29,7 @@ def get_total_time(data, start_time=None, end_time=None):
                 continue
             total_sec += entry["duration"]
         hours = round(total_sec / 3600, 2)
-        return f"Ты провёл за компом {hours} часов 💻"
+        return f"Ты провёл за компом {hours} часов 💻🖱️🎚️🔊"
     except Exception as e:
         return f"Ошибка при обработке данных: {e}"
 
@@ -54,6 +54,7 @@ def get_top_programs(data, start_time=None, end_time=None):
         
         result = "Топ 5 программ по времени использования:\n"
         for i, (program, seconds) in enumerate(sorted_programs, 1):
+            seconds = round(seconds, 2)
             hours = round(seconds / 3600, 2)
             result += f"{i}. {program}: {hours} часов\n"
         return result
@@ -77,9 +78,10 @@ def start(update, context):
         [
             InlineKeyboardButton("Топ 5 программ", callback_data="top"),
         ],
+        
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("Йо! Я тебе буду слать, сколько ты сидишь за компом! Выбери статистику:", reply_markup=reply_markup)
+    update.message.reply_text("Ты что-то делаешь? Ты сколько времени провёл за компом? Выбери интересующий тебя пункт", reply_markup=reply_markup)
 
 def button(update, context):
     query = update.callback_query
