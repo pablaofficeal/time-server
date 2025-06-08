@@ -11,7 +11,6 @@ from pathlib import Path
 from plyer import notification
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import numpy as np
 import importlib.util
 import sys
 
@@ -46,7 +45,7 @@ class PluginManager:
                 module = importlib.util.module_from_spec(spec)
                 sys.modules[plugin_name] = module
                 spec.loader.exec_module(module)
-                self.loaded_plugins[plugin_name] = module.Plugin(self.app)
+                self.loaded_plugins[plugin_name] = module.Plugin(self.app, self.plugins[plugin_name].get("config", {}))
                 self.app.save_log_data("Plugin", f"Loaded plugin {plugin_name}")
             except Exception as e:
                 self.app.save_log_data("Plugin Error", f"Failed to load plugin {plugin_name}: {str(e)}")
@@ -95,10 +94,12 @@ class TimeTrackerApp:
 
         # Инициализация менеджера плагинов
         self.plugin_manager = PluginManager(self)
-        self.load_plugins()
 
         # Создание интерфейса
         self.create_widgets()
+
+        # Загрузка плагинов после создания интерфейса
+        self.load_plugins()
 
         # Запуск проверки уведомлений
         self.notification_thread = threading.Thread(target=self.check_notifications, daemon=True)
@@ -108,7 +109,6 @@ class TimeTrackerApp:
         if self.json_file.exists():
             with open(self.json_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                # Фильтрация некорректных записей
                 valid_data = [
                     entry for entry in data
                     if isinstance(entry, dict) and all(key in entry for key in ["app_name", "file_name", "start_time", "duration"])
@@ -303,7 +303,207 @@ class TimeTrackerApp:
             if not destination.exists():
                 with open(file_path, "rb") as src, open(destination, "wb") as dst:
                     dst.write(src.read())
-                self.plugin_manager.plugins[plugin_name] = {"enabled": True}
+                self.plugin_manager.plugins[plugin_name] = {"enabled": True, "config": {}}
+                self.plugin_manager.save_plugins_config()
+                self.plugin_manager.load_plugin(plugin_name)
+                self.update_plugins_list()
+                self.save_log_data("Plugin", f"Installed plugin {plugin_name}")
+
+    def update_plugins_list(self):
+        for widget in self.plugins_frame.winfo_children():
+            widget.destroy()
+
+        for plugin_name, config in self.plugin_manager.plugins.items():
+            frame = ctk.CTkFrame(self.plugins_frame)
+            frame.pack(fill="x", pady=5, padx=5)
+
+    def load_log_data(self):
+        if self.log_file.exists():
+            with open(self.log_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        else:
+            return []
+
+    def save_usage_data(self):
+        with open(self.json_file, "w", encoding="utf-8") as f:
+            json.dump(self.usage_data, f, indent=4, ensure_ascii=False)
+
+    def save_log_data(self, action, details):
+        self.log_data.append({
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "action": action,
+            "details": details
+        })
+        with open(self.log_file, "w", encoding="utf-8") as f:
+            json.dump(self.log_data, f, indent=4, ensure_ascii=False)
+        self.update_logs()
+
+    def create_widgets(self):
+        self.main_frame = ctk.CTkFrame(self.root)
+        self.main_frame.pack(pady=10, padx=10, fill="both", expand=True)
+
+        self.label = ctk.CTkLabel(
+            self.main_frame,
+            text="Computer Time Tracker",
+            font=ctk.CTkFont(size=24, weight="bold")
+        )
+        self.label.pack(pady=10)
+
+        self.tab_view = ctk.CTkTabview(self.main_frame)
+        self.tab_view.pack(pady=10, padx=10, fill="both", expand=True)
+
+        tracker_tab = self.tab_view.add("Tracker")
+        stats_tab = self.tab_view.add("Statistics")
+        graphs_tab = self.tab_view.add("Graphs")
+        settings_tab = self.tab_view.add("Settings")
+        logs_tab = self.tab_view.add("Logs")
+        plugins_tab = self.tab_view.add("Plugins")
+
+        self.create_tracker_tab(tracker_tab)
+        self.create_stats_tab(stats_tab)
+        self.create_graphs_tab(graphs_tab)
+        self.create_settings_tab(settings_tab)
+        self.create_logs_tab(logs_tab)
+        self.create_plugins_tab(plugins_tab)
+
+    def create_tracker_tab(self, tab):
+        self.toggle_button = ctk.CTkButton(
+            tab,
+            text="Start Tracking",
+            command=self.toggle_tracking,
+            width=200,
+            height=40,
+            font=ctk.CTkFont(size=16)
+        )
+        self.toggle_button.pack(pady=20)
+
+        self.current_app_label = ctk.CTkLabel(
+            tab,
+            text="Current: None",
+            font=ctk.CTkFont(size=14)
+        )
+        self.current_app_label.pack(pady=10)
+
+        self.total_time_label = ctk.CTkLabel(
+            tab,
+            text="Total time: 0h 0m 0s",
+            font=ctk.CTkFont(size=14)
+        )
+        self.total_time_label.pack(pady=10)
+
+    def create_stats_tab(self, tab):
+        self.stats_text = ctk.CTkTextbox(tab, height=400, width=600, font=ctk.CTkFont(size=12))
+        self.stats_text.pack(pady=10)
+
+        filter_frame = ctk.CTkFrame(tab)
+        filter_frame.pack(pady=10)
+        ctk.CTkLabel(filter_frame, text="Filter by days:").pack(side="left", padx=5)
+        self.filter_days = ctk.CTkOptionMenu(
+            filter_frame,
+            values=["1", "3", "7", "30", "All"],
+            command=self.update_stats
+        )
+        self.filter_days.pack(side="left", padx=5)
+
+        refresh_button = ctk.CTkButton(
+            tab,
+            text="Refresh Stats",
+            command=lambda: self.update_stats(self.filter_days.get()),
+            width=150
+        )
+        refresh_button.pack(pady=10)
+
+        self.update_stats("All")
+
+    def create_graphs_tab(self, tab):
+        self.figure, self.ax = plt.subplots(figsize=(8, 4))
+        self.canvas = FigureCanvasTkAgg(self.figure, master=tab)
+        self.canvas.get_tk_widget().pack(pady=10)
+
+        filter_frame = ctk.CTkFrame(tab)
+        filter_frame.pack(pady=10)
+        ctk.CTkLabel(filter_frame, text="Graph period (days):").pack(side="left", padx=5)
+        self.graph_days = ctk.CTkOptionMenu(
+            filter_frame,
+            values=["1", "3", "7", "30"],
+            command=self.update_graph
+        )
+        self.graph_days.pack(side="left", padx=5)
+
+        self.update_graph("7")
+
+    def create_settings_tab(self, tab):
+        ctk.CTkLabel(
+            tab,
+            text="Settings",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).pack(pady=10)
+
+        ctk.CTkLabel(
+            tab,
+            text=f"Data storage: {self.json_file}"
+        ).pack(pady=5)
+
+        ctk.CTkLabel(
+            tab,
+            text="Max hours per app:"
+        ).pack(pady=5)
+        self.max_hours_entry = ctk.CTkEntry(tab, width=100)
+        self.max_hours_entry.pack(pady=5)
+        self.max_hours_entry.insert(0, "6")
+
+        ctk.CTkButton(
+            tab,
+            text="Apply Max Hours",
+            command=self.apply_max_hours,
+            width=150
+        ).pack(pady=10)
+
+        ctk.CTkButton(
+            tab,
+            text="Clear All Data",
+            command=self.clear_data,
+            fg_color="red",
+            hover_color="darkred",
+            width=150
+        ).pack(pady=10)
+
+    def create_logs_tab(self, tab):
+        self.logs_text = ctk.CTkTextbox(tab, height=400, width=600, font=ctk.CTkFont(size=12))
+        self.logs_text.pack(pady=10)
+        self.update_logs()
+
+    def create_plugins_tab(self, tab):
+        ctk.CTkLabel(
+            tab,
+            text="Plugins",
+            font=ctk.CTkFont(size=16, weight="bold")
+        ).pack(pady=10)
+
+        self.plugins_frame = ctk.CTkFrame(tab)
+        self.plugins_frame.pack(pady=10, fill="both", expand=True)
+
+        self.update_plugins_list()
+
+        ctk.CTkButton(
+            tab,
+            text="Install Plugin",
+            command=self.install_plugin,
+            width=150
+        ).pack(pady=10)
+
+    def install_plugin(self):
+        file_path = ctk.filedialog.askopenfilename(
+            filetypes=[("Python files", "*.py")],
+            initialdir=str(self.plugin_manager.plugins_path)
+        )
+        if file_path:
+            plugin_name = Path(file_path).stem
+            destination = self.plugin_manager.plugins_path / f"{plugin_name}.py"
+            if not destination.exists():
+                with open(file_path, "rb") as src, open(destination, "wb") as dst:
+                    dst.write(src.read())
+                self.plugin_manager.plugins[plugin_name] = {"enabled": True, "config": {}}
                 self.plugin_manager.save_plugins_config()
                 self.plugin_manager.load_plugin(plugin_name)
                 self.update_plugins_list()
