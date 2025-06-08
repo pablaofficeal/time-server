@@ -5,7 +5,7 @@ import time
 import threading
 from datetime import datetime, timedelta
 
-
+TOKEN = "8117921243:AAFi-3z-4GHUfVY7-fWVABKPfNsgurf26cU"
 YOUR_CHAT_ID = "your_chat_id_here"  # Replace with your actual chat ID
 
 def get_data():
@@ -81,7 +81,7 @@ def start(update, context):
         
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("Ты что-то делаешь? Ты сколько времени провёл за компом? Выбери интересующий тебя пункт", reply_markup=reply_markup)
+    update.message.reply_text("Ты что-то делаешь?\nТы сколько времени провёл за компом?\nВыбери интересующий тебя пункт", reply_markup=reply_markup)
 
 def button(update, context):
     query = update.callback_query

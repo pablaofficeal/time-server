@@ -13,5 +13,75 @@
         "timestamp": "2025-05-17 10:33:47",
         "event": "GraphBuilt",
         "details": "График по файлу: usage.json"
+    },
+    {
+        "timestamp": "2025-05-22 09:36:42",
+        "event": "AppStarted",
+        "details": "Программа запущена"
+    },
+    {
+        "timestamp": "2025-05-22 09:36:47",
+        "event": "FileOpenCanceled",
+        "details": ""
+    },
+    {
+        "timestamp": "2025-05-22 09:37:35",
+        "event": "FileOpenCanceled",
+        "details": ""
+    },
+    {
+        "timestamp": "2025-05-22 09:40:37",
+        "event": "FileOpenCanceled",
+        "details": ""
+    },
+    {
+        "timestamp": "2025-05-22 09:41:10",
+        "event": "FileOpened",
+        "details": "Открыт файл: C:/Users/pavlo/Pictures/server_errors .json"
+    },
+    {
+        "timestamp": "2025-05-22 09:41:10",
+        "event": "FileOpenError",
+        "details": "Extra data: line 1 column 5 (char 4)"
+    },
+    {
+        "timestamp": "2025-05-22 09:41:21",
+        "event": "AppStarted",
+        "details": "Программа запущена"
+    },
+    {
+        "timestamp": "2025-05-22 09:41:26",
+        "event": "FileOpened",
+        "details": "Открыт файл: C:/Users/pavlo/Pictures/server_errors .json"
+    },
+    {
+        "timestamp": "2025-05-22 09:41:26",
+        "event": "FileOpenError",
+        "details": "Extra data: line 1 column 5 (char 4)"
+    },
+    {
+        "timestamp": "2025-06-08 10:59:31",
+        "event": "AppStarted",
+        "details": "Программа запущена"
+    },
+    {
+        "timestamp": "2025-06-08 10:59:40",
+        "event": "FileOpened",
+        "details": "Открыт файл: C:/Users/pavlo/AppData/Roaming/TimeTracker/usage.json"
+    },
+    {
+        "timestamp": "2025-06-08 11:01:31",
+        "event": "AppStarted",
+        "details": "Программа запущена"
+    },
+    {
+        "timestamp": "2025-06-08 11:01:37",
+        "event": "FileOpened",
+        "details": "Открыт файл: C:/Users/pavlo/AppData/Roaming/TimeTracker/usage.json"
+    },
+    {
+        "timestamp": "2025-06-08 11:01:45",
+        "event": "GraphBuilt",
+        "details": "График по файлу: usage.json"
     }
 ]

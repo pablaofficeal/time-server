@@ -97,7 +97,6 @@ class TimeTrackerVisualizer(ctk.CTk):
 
         plt.figure(figsize=(8, 6))
         plt.pie(durations_min, labels=apps, autopct="%1.1f%%", startangle=140)
-        plt.title("Распределение времени по приложениям (в минутах)\n(меньше 2% не отображаются)")
         plt.axis("equal")
         plt.tight_layout()
 
