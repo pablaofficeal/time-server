@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from plyer import notification
 
 class Plugin:
@@ -31,7 +30,6 @@ class Plugin:
             message=f"You have been using {app_name} for {minutes} minutes!",
             timeout=10
         )
-=======
 from plyer import notification
 
 class Plugin:
@@ -64,5 +62,4 @@ class Plugin:
             message=f"You have been using {app_name} for {minutes} minutes!",
             timeout=10
         )
->>>>>>> 3ffa54c606a27bf104e1f5386be6a21cce76d47c
         self.app.save_log_data("Plugin Notification", f"Sent notification for {app_name} after {minutes} minutes")
