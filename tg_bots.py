@@ -5,7 +5,7 @@ import time
 import threading
 from datetime import datetime, timedelta
 
-TOKEN = "8117921243:AAFi-3z-4GHUfVY7-fWVABKPfNsgurf26cU"
+TOKEN = ""
 YOUR_CHAT_ID = "your_chat_id_here"  # Replace with your actual chat ID
 
 def get_data():
