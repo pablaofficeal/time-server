@@ -6,9 +6,30 @@
     <title>Pabla Timer Stats</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css">
+<style>
+.menuu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menuu img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
     <div class="container">
+        <div class="menuu" id="menuu">
+            <a href="{{ url_for('profile') }}"><img src="/static/img/profile.png" alt="profile"></a>
+        </div>
         <h1>📊 Статистика использования ПК</h1>
         <div class="filters">
             <button class="btn active" onclick="filterData(1)">За день</button>
