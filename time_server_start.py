@@ -8,8 +8,20 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import subprocess
 import threading  # Импортируем threading для многозадачности
+from flask_sqlalchemy import SQLAlchemy
+
+if not os.path.exists('database'):
+    os.makedirs('database')
 
 app = Flask(__name__, static_folder='static')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/TimeTracker.db'
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
 
 # Абсолютные пути
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -50,9 +62,43 @@ def generate_plot():
     plt.close()
     return plot_path
 
+with app.app_context():
+    db.create_all()
+
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User(username=username, email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+
+        return render_template("home.html")
+
+    return render_template("register.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        user = User.query.filter_by(username=username).first()
+        if user and user.password == password:
+            return render_template("home.html")
+
+    return render_template("login.html")
+
+@app.route("/home")
+def home():
+    return render_template("home.html")
 
 @app.route("/api/data")
 def api_data():
@@ -118,13 +164,6 @@ def api_online():
     df = pd.DataFrame(data)
     online_apps = df["app_name"].nunique()  # Считаем уникальные приложения
     return jsonify({"online_apps": online_apps})
-
-# Функция для запуска бота
-def run_bot():
-    subprocess.call(["python", "C:\\time server\\tg_bots.py"])
-
-# Запускаем бота в отдельном потоке
-threading.Thread(target=run_bot, daemon=True).start()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=1356, debug=True, threaded=False)  # Потоки отключены для matplotlib

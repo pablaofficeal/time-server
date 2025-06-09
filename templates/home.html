@@ -10,7 +10,6 @@
 <body>
     <div class="container">
         <h1>📊 Статистика использования ПК</h1>
-        
         <div class="filters">
             <button class="btn active" onclick="filterData(1)">За день</button>
             <button class="btn" onclick="filterData(3)">За 3 дня</button>
@@ -21,6 +20,12 @@
             <button id="openTopApps">Top App</button>
         </div>
     </div>
+<div class="onlaine">
+    <h2>Сейчас в сети</h2>
+    <ul id="onlineUsers">
+        <li>—</li>
+    </ul>
+</div>
 <div class="top-apps" id="top-apps">
     <h2>Топ 5 программ за 1 месяц</h2>
     <ol>
@@ -45,19 +50,22 @@
                 <p id="topApp2">—</p>
             </div>
         </div>
-
         <div class="charts">
             <div class="chart-container">
                 <h2 class="chart-title">Время по дням</h2>
-                <img id="timeChart" src="/api/plot?range=1" alt="График времени">
+                <button class="open-img" id="openTimeChart"><img id="timeChart" src="/api/plot?range=1" alt="График времени"></button>
             </div>
             <div class="chart-container">
                 <h2 class="chart-title">Топ программ</h2>
-                <img id="appsChart" src="" alt="График программ">
+                <button class="open-img" id="openTimeChart2"><img id="appsChart" src="" alt="График программ"></button>
             </div>
         </div>
-
     </div>
+    
     <script src="/static/js/main.js"></script>
+
+    <script>
+        
+    </script>
 </body>
 </html>
