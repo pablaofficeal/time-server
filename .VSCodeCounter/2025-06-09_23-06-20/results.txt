@@ -1,0 +1,64 @@
+Date : 2025-06-09 23:06:20
+Directory : c:\time_server
+Total : 24 files,  2213 codes, 45 comments, 297 blanks, all 2555 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Python     |         10 |      1,114 |         27 |        230 |      1,371 |
+| Draw.io    |          2 |        349 |          0 |          0 |        349 |
+| PostCSS    |          1 |        310 |          0 |          8 |        318 |
+| HTML       |          5 |        173 |          0 |          4 |        177 |
+| JSON       |          1 |         87 |          0 |          0 |         87 |
+| JavaScript |          1 |         85 |         18 |         18 |        121 |
+| Markdown   |          1 |         75 |          0 |         33 |        108 |
+| PowerShell |          3 |         20 |          0 |          4 |         24 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                      | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                         |         24 |      2,213 |         45 |        297 |      2,555 |
+| . (Files)                                                 |          9 |      1,445 |         19 |        228 |      1,692 |
+| plugins                                                   |          3 |         57 |          4 |         10 |         71 |
+| powershell                                                |          5 |        143 |          4 |         29 |        176 |
+| powershell (Files)                                        |          3 |         20 |          0 |          4 |         24 |
+| powershell\test                                           |          2 |        123 |          4 |         25 |        152 |
+| static                                                    |          2 |        395 |         18 |         26 |        439 |
+| static\css                                                |          1 |        310 |          0 |          8 |        318 |
+| static\js                                                 |          1 |         85 |         18 |         18 |        121 |
+| templates                                                 |          5 |        173 |          0 |          4 |        177 |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                  | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\time_server\README.md                                  | Markdown   |         75 |          0 |         33 |        108 |
+| c:\time_server\codeviz-diagram-2025-06-08T09-35-00.drawio | Draw.io    |        158 |          0 |          0 |        158 |
+| c:\time_server\codeviz-diagram-2025-06-09T19-39-52.drawio | Draw.io    |        191 |          0 |          0 |        191 |
+| c:\time_server\grafana.py                                 | Python     |         80 |          0 |         32 |        112 |
+| c:\time_server\history.json                               | JSON       |         87 |          0 |          0 |         87 |
+| c:\time_server\long_session_alert.py                      | Python     |         10 |          0 |          3 |         13 |
+| c:\time_server\main_program_time.py                       | Python     |        630 |          8 |        109 |        747 |
+| c:\time_server\plugins\bug.py                             | Python     |          8 |          4 |          3 |         15 |
+| c:\time_server\plugins\long_session_alert.py              | Python     |         16 |          0 |          3 |         19 |
+| c:\time_server\plugins\push_notifications.py              | Python     |         33 |          0 |          4 |         37 |
+| c:\time_server\powershell\test.ps1                        | PowerShell |          6 |          0 |          2 |          8 |
+| c:\time_server\powershell\test2.ps1                       | PowerShell |          9 |          0 |          1 |         10 |
+| c:\time_server\powershell\test3.ps1                       | PowerShell |          5 |          0 |          1 |          6 |
+| c:\time_server\powershell\test\test.py                    | Python     |         85 |          4 |         16 |        105 |
+| c:\time_server\powershell\test\test2.py                   | Python     |         38 |          0 |          9 |         47 |
+| c:\time_server\static\css\index.css                       | PostCSS    |        310 |          0 |          8 |        318 |
+| c:\time_server\static\js\main.js                          | JavaScript |         85 |         18 |         18 |        121 |
+| c:\time_server\templates\home.html                        | HTML       |         88 |          0 |          4 |         92 |
+| c:\time_server\templates\index.html                       | HTML       |         24 |          0 |          0 |         24 |
+| c:\time_server\templates\login.html                       | HTML       |         19 |          0 |          0 |         19 |
+| c:\time_server\templates\profile.html                     | HTML       |         22 |          0 |          0 |         22 |
+| c:\time_server\templates\register.html                    | HTML       |         20 |          0 |          0 |         20 |
+| c:\time_server\time_server_start.py                       | Python     |        157 |          3 |         40 |        200 |
+| c:\time_server\zip.py                                     | Python     |         57 |          8 |         11 |         76 |
+| Total                                                     |            |      2,213 |         45 |        297 |      2,555 |
++-----------------------------------------------------------+------------+------------+------------+------------+------------+
