@@ -23,10 +23,14 @@ class Plugin:
             self.current_app = None
             self.current_duration = 0
 
-    def send_notification(self, app_name, duration):
+def send_notification(self, app_name, duration):
+    try:
         minutes = duration // 60
         notification.notify(
             title="Time Tracker: Long Session Alert",
             message=f"You have been using {app_name} for {minutes} minutes!",
             timeout=10
         )
+        self.app.save_log_data("Plugin Notification", f"Sent notification for {app_name} after {minutes} minutes")
+    except Exception as e:
+        self.app.save_log_data("Plugin Notification Error", f"Failed to send notification: {e}")
