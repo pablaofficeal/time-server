@@ -9,8 +9,16 @@
 </head>
 <body>
     <div class="menu" id="menu">
-        <a href="{{ url_for('index') }}">home</a>
-        <a href="{{ url_for('register') }}">register</a>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+    <div class="content">
+        <h1>📊 Статистика использования ПК</h1>
+        <div class="charts">
+            <p>ТУТ будут твоя статистика использования ПК.</p>
+            <p>Только зарегистрированные пользователи могут видеть свою статистику.</p>
+        </div>
     </div>
 </body>
 </html>
