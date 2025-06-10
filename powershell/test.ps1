@@ -5,3 +5,12 @@ $usedPIDs = netstat -aon | Select-String 1356 | ForEach-Object {
 $usedPIDs | ForEach-Object {
     tasklist /FI "PID eq $_"
 }
+$usedPIDs | ForEach-Object {
+    taskkill /F /PID $_
+}
+$Params = @{
+    Parameter = Value
+}
+$Params.GetEnumerator() | ForEach-Object {
+    taskkill /F /PID $_.Value
+}
