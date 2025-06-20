@@ -316,3 +316,20 @@ input[type="text"], input[type="password"], input[type="email"] {
 .charts p {
     margin: 0;
 }
+
+.menuu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menuu img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
