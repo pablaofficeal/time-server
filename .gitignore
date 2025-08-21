@@ -1,3 +1,5 @@
-*tg_bots.py
 *.db
 */static/apps_plot.png
+tg_bot.py
+static/apps_plot.png
+static/usage_plot.png
