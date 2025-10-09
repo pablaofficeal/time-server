@@ -488,6 +488,11 @@ class TimeTrackerApp:
             width=150
         ).pack(pady=10)
 
+        ctk.CTkCheckBox(
+            tab,
+            text="Enable Long Session Alert",
+        ).pack(pady=5)
+
     def create_logs_tab(self, tab):
         self.logs_text = ctk.CTkTextbox(tab, height=400, width=600, font=ctk.CTkFont(size=12))
         self.logs_text.pack(pady=10)
