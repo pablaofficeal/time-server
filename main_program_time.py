@@ -1,7 +1,5 @@
 import customtkinter as ctk
 import psutil
-import win32gui
-import win32process
 import time
 import json
 import os
@@ -13,6 +11,25 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import importlib.util
 import sys
+
+# Linux-совместимые импорты для получения активного окна
+try:
+    import win32gui
+    import win32process
+    WINDOWS_MODE = True
+except ImportError:
+    WINDOWS_MODE = False
+    try:
+        import Xlib.display
+        import Xlib.X
+        LINUX_MODE = True
+    except ImportError:
+        LINUX_MODE = False
+        try:
+            import subprocess
+            SUBPROCESS_MODE = True
+        except ImportError:
+            SUBPROCESS_MODE = False
 
 # Настройка темы CustomTkinter
 ctk.set_appearance_mode("Dark")
@@ -70,9 +87,12 @@ class TimeTrackerApp:
         self.root.title("Computer Time Tracker")
         self.root.geometry("1000x800")
 
-        # Путь к папке AppData
-        self.appdata_path = Path(os.getenv("APPDATA")) / "TimeTracker"
-        self.appdata_path.mkdir(exist_ok=True)
+        # Путь к папке с данными (кросс-платформенный)
+        if os.name == 'nt':  # Windows
+            self.appdata_path = Path(os.getenv("APPDATA")) / "TimeTracker"
+        else:  # Linux и другие Unix-подобные
+            self.appdata_path = Path.home() / ".local" / "share" / "TimeTracker"
+        self.appdata_path.mkdir(parents=True, exist_ok=True)
         self.json_file = self.appdata_path / "usage.json"
         self.log_file = self.appdata_path / "logs.json"
 
@@ -597,18 +617,64 @@ class TimeTrackerApp:
 
     def get_active_window_info(self):
         try:
-            hwnd = win32gui.GetForegroundWindow()
-            _, pid = win32process.GetWindowThreadProcessId(hwnd)
-            process = psutil.Process(pid)
-            app_name = process.name()
-            window_title = win32gui.GetWindowText(hwnd)
+            if WINDOWS_MODE:
+                # Windows версия
+                hwnd = win32gui.GetForegroundWindow()
+                _, pid = win32process.GetWindowThreadProcessId(hwnd)
+                process = psutil.Process(pid)
+                app_name = process.name()
+                window_title = win32gui.GetWindowText(hwnd)
+            elif LINUX_MODE:
+                # Linux версия с Xlib
+                display = Xlib.display.Display()
+                window = display.get_input_focus().focus
+                wmname = window.get_wm_name()
+                wmclass = window.get_wm_class()
+                
+                if wmclass:
+                    app_name = wmclass[1] if len(wmclass) > 1 else wmclass[0]
+                else:
+                    app_name = "Unknown"
+                
+                window_title = wmname if wmname else "Unknown"
+                
+                # Получаем PID через Xlib
+                try:
+                    pid = window.get_wm_pid()
+                    if pid:
+                        process = psutil.Process(pid)
+                        app_name = process.name()
+                except:
+                    pass
+                    
+                display.close()
+            elif SUBPROCESS_MODE:
+                # Альтернативный Linux способ через xdotool
+                try:
+                    # Получаем активное окно
+                    window_id = subprocess.check_output(['xdotool', 'getactivewindow']).decode().strip()
+                    # Получаем PID окна
+                    pid = subprocess.check_output(['xdotool', 'getwindowpid', window_id]).decode().strip()
+                    process = psutil.Process(int(pid))
+                    app_name = process.name()
+                    # Получаем заголовок окна
+                    window_title = subprocess.check_output(['xdotool', 'getwindowname', window_id]).decode().strip()
+                except:
+                    # Запасной вариант - используем текущий процесс
+                    app_name = "Unknown"
+                    window_title = "Unknown"
+            else:
+                # Если ничего не доступно - используем psutil для текущего процесса
+                app_name = psutil.Process().name()
+                window_title = "Unknown"
 
             file_name = "Unknown"
-            if "notepad" in app_name.lower() or "code" in app_name.lower():
+            if "notepad" in app_name.lower() or "code" in app_name.lower() or "vim" in app_name.lower() or "nano" in app_name.lower():
                 file_name = window_title.split(" - ")[0] if " - " in window_title else window_title
 
             return app_name, file_name
-        except:
+        except Exception as e:
+            self.save_log_data("Window Info Error", f"Failed to get active window info: {str(e)}")
             return "Unknown", "Unknown"
 
     def track_usage(self):
