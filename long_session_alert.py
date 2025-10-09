@@ -14,3 +14,6 @@ class Plugin:
                     message=f"You have used {self.current_app} for more than 30 minutes.",
                     timeout=10
                 )
+                self.current_duration = 0
+                self.current_app = data.get("app_name")
+                
