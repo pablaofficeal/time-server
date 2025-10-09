@@ -8,6 +8,9 @@ class Plugin:
 
     def handle_event(self, event, data):
         if event == "app_switched":
-            if self.current_app and self.current_duration >= 1800:  /
-
-System: * Today's date and time is 09:13 AM CEST on Saturday, June 14, 2025.
+            if self.current_app and self.current_duration >= 1800:
+                notification.notify(
+                    title="Long Session Alert",
+                    message=f"You have used {self.current_app} for more than 30 minutes.",
+                    timeout=10
+                )
