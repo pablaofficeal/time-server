@@ -52,15 +52,10 @@
             document.getElementById('topApp12').textContent = `${topApps[1][0]} (${(topApps[1][1]/3600).toFixed(1)}ч)`;
             document.getElementById('topApp3').textContent = `${topApps[2][0]} (${(topApps[2][1]/3600).toFixed(1)}ч)`;
             document.getElementById('topApp4').textContent = `${topApps[3][0]} (${(topApps[3][1]/3600).toFixed(1)}ч)`;
-            document.getElementById('topApp5').textContent = `${topApps[4][0]} (${(topApps[4][1]/3600).toFixed(1)}ч)`;
-            
-            // Генерируем график программ (заглушка - можно доработать)
+
             document.getElementById('appsChart').src = `/api/apps_plot?t=${new Date().getTime()}`;
-            // Здесь можно добавить логику для генерации графика программ
-            // Например, можно использовать библиотеку Chart.js или другую для визуализации данных
-            // Пример: new Chart(ctx, { type: 'bar', data: {...}, options: {...} });
-            // Или просто обновить src изображения с графиком
-            // document.getElementById('appsChart').src = `/api/apps_plot?data=${encodeURIComponent(JSON.stringify(apps))}`;
+            document.getElementById('top-apps').style.display = 'none';
+            
 
 document.getElementById('openTopApps').addEventListener('click', () => {
     const topApps = document.getElementById('top-apps');

@@ -19,7 +19,7 @@ app.secret_key = os.urandom(24)  # Это нужно для работы session
 # Абсолютные пути
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-JSON_PATH = r"C:\Users\pavlo\AppData\Roaming\TimeTracker\usage.json"
+JSON_PATH = r"/home/pabla/.local/share/TimeTracker/usage.json"
 
 def load_data():
     """Загружает JSON с проверкой кодировки"""
