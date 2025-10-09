@@ -3,3 +3,5 @@
 tg_bot.py
 static/apps_plot.png
 static/usage_plot.png
+*.pyc
+*__pycache__/
